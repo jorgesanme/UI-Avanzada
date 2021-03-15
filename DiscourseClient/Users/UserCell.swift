@@ -8,7 +8,7 @@
 
 import UIKit
 
-class UserCell: UITableViewCell {
+class UserCell: UICollectionViewCell {
     
     @IBOutlet weak var userImage: UIImageView!
     @IBOutlet weak var userName: UILabel!
@@ -29,7 +29,7 @@ class UserCell: UITableViewCell {
 
 extension UserCell: UserCellViewModelViewDelegate {
     func userImageFetched() {
-        imageView?.image = viewModel?.userImage
+        userImage?.image = viewModel?.userImage
         setNeedsLayout()
     }
 }

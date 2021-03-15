@@ -30,6 +30,7 @@
                 <constraints>
                     <constraint firstAttribute="trailing" secondItem="O21-J9-0FS" secondAttribute="trailing" id="805-Oh-qXa"/>
                     <constraint firstItem="f2U-Oy-3ZS" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" constant="7" id="GAq-Re-S0C"/>
+                    <constraint firstItem="f2U-Oy-3ZS" firstAttribute="centerX" secondItem="H2p-sc-9uM" secondAttribute="centerX" id="M7k-Fe-qRZ"/>
                     <constraint firstItem="O21-J9-0FS" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" id="cMJ-gl-8fl"/>
                     <constraint firstAttribute="trailing" secondItem="f2U-Oy-3ZS" secondAttribute="trailing" constant="7" id="ci1-NJ-ohE"/>
                     <constraint firstAttribute="bottom" secondItem="O21-J9-0FS" secondAttribute="bottom" id="dsE-yp-vrC"/>
