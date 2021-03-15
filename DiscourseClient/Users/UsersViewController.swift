@@ -13,7 +13,8 @@ class UsersViewController: UIViewController {
     let flowLayout = UICollectionViewFlowLayout()
     
     lazy var collectionView: UICollectionView = {
-        let collection = UICollectionView(frame: .zero)
+        let collection = UICollectionView(frame: .zero, collectionViewLayout: self.flowLayout)
+        
         collection.translatesAutoresizingMaskIntoConstraints = false
         collection.register(UINib(nibName: "UserCell", bundle: nil), forCellWithReuseIdentifier: "UserCell")
         
@@ -37,10 +38,10 @@ class UsersViewController: UIViewController {
         flowLayout.minimumInteritemSpacing = 20.5
         flowLayout.itemSize = CGSize(width: 94, height: 124)
         flowLayout.estimatedItemSize = .zero
-        flowLayout.minimumLineSpacing = 18        
+        flowLayout.minimumLineSpacing = 18
         
         collectionView.setCollectionViewLayout(flowLayout, animated: true)
-        
+        collectionView.backgroundColor = .white
         collectionView.dataSource = self
         collectionView.delegate = self
         
@@ -64,9 +65,10 @@ class UsersViewController: UIViewController {
 }
 
 extension UsersViewController: UICollectionViewDataSource{
+   
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        viewModel.numberOfSections()
+        viewModel.numberOfRows(in: section)
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
