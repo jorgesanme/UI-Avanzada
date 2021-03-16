@@ -44,6 +44,8 @@ class TopicsViewModel {
             }
         }
     }
+    
+    //Tenia colocado aqúi el dateFormatter.
 
     func viewWasLoaded() {
         fetchTopicsAndReloadUI()

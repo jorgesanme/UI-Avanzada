@@ -56,8 +56,8 @@ class AppCoordinator: Coordinator {
 
         tabBarController.tabBar.tintColor = .black
         tabBarController.viewControllers = [topicsNavigationController, categoriesNavigationController, usersNavigationController]
-        tabBarController.tabBar.items?.first?.image = UIImage(named: "Buenas") 
-        tabBarController.tabBar.items?[1].image = UIImage(systemName: "tag")
+        tabBarController.tabBar.items?.first?.image = UIImage(named: "topicUnselected")
+        tabBarController.tabBar.items?[1].image = UIImage(named: "ajustesUnselected")
         tabBarController.tabBar.items?[2].image = UIImage(named: "usuariosUnselected")
 
         window.rootViewController = tabBarController

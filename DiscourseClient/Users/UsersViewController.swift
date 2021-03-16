@@ -8,8 +8,8 @@
 import UIKit
 
 class UsersViewController: UIViewController {
-    let viewModel: UsersViewModel
     
+    let viewModel: UsersViewModel
     let flowLayout = UICollectionViewFlowLayout()
     
     lazy var collectionView: UICollectionView = {
@@ -17,7 +17,6 @@ class UsersViewController: UIViewController {
         
         collection.translatesAutoresizingMaskIntoConstraints = false
         collection.register(UINib(nibName: "UserCell", bundle: nil), forCellWithReuseIdentifier: "UserCell")
-        
         return collection
     }()
     
@@ -34,12 +33,11 @@ class UsersViewController: UIViewController {
         view = UIView()
         view.backgroundColor = .white
       
-        flowLayout.sectionInset = UIEdgeInsets(top: 16, left: 16, bottom: 16, right: 16)
+        flowLayout.sectionInset = UIEdgeInsets(top: 24, left: 26, bottom: 24, right: 26)
         flowLayout.minimumInteritemSpacing = 20.5
         flowLayout.itemSize = CGSize(width: 94, height: 124)
         flowLayout.estimatedItemSize = .zero
         flowLayout.minimumLineSpacing = 18
-        
         collectionView.setCollectionViewLayout(flowLayout, animated: true)
         collectionView.backgroundColor = .white
         collectionView.dataSource = self
@@ -50,8 +48,7 @@ class UsersViewController: UIViewController {
             collectionView.topAnchor.constraint(equalTo: view.topAnchor),
             collectionView.leftAnchor.constraint(equalTo: view.leftAnchor),
             collectionView.rightAnchor.constraint(equalTo: view.rightAnchor),
-            collectionView.bottomAnchor.constraint(equalTo: view.bottomAnchor)
-        ])
+            collectionView.bottomAnchor.constraint(equalTo: view.bottomAnchor)])
     }
 
     override func viewDidLoad() {
@@ -65,7 +62,6 @@ class UsersViewController: UIViewController {
 }
 
 extension UsersViewController: UICollectionViewDataSource{
-   
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         viewModel.numberOfRows(in: section)
@@ -79,7 +75,6 @@ extension UsersViewController: UICollectionViewDataSource{
         }
         fatalError()
     }
-    
 }
 
 
@@ -95,7 +90,6 @@ extension UsersViewController: UICollectionViewDelegate{
 extension UsersViewController: UsersViewModelViewDelegate {
     func usersWereFetched() {
         collectionView.reloadData()
-        //tableView.reloadData()
     }
 
     func errorFetchingUsers() {
@@ -103,41 +97,3 @@ extension UsersViewController: UsersViewModelViewDelegate {
     }
 }
 
-//    lazy var tableView: UITableView = {
-//        let table = UITableView(frame: .zero, style: .grouped)
-//        table.translatesAutoresizingMaskIntoConstraints = false
-//        table.dataSource = self
-//        table.delegate = self
-//        table.register(UINib(nibName: "UserCell", bundle: nil), forCellReuseIdentifier: "UserCell")
-//        table.estimatedRowHeight = 100
-//        table.rowHeight = UITableView.automaticDimension
-//        return table
-//    }()
-
-
-//extension UsersViewController: UITableViewDataSource {
-//    func numberOfSections(in tableView: UITableView) -> Int {
-//        return viewModel.numberOfSections()
-//    }
-//
-//    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-//        return viewModel.numberOfRows(in: section)
-//    }
-//
-//    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-//        if let cell = tableView.dequeueReusableCell(withIdentifier: "UserCell", for: indexPath) as? UserCell,
-//            let cellViewModel = viewModel.viewModel(at: indexPath) {
-//            cell.viewModel = cellViewModel
-//            return cell
-//        }
-//
-//        fatalError()
-//    }
-//}
-
-//extension UsersViewController: UITableViewDelegate {
-//    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-//        tableView.deselectRow(at: indexPath, animated: true)
-//        viewModel.didSelectRow(at: indexPath)
-//    }
-//}
