@@ -22,7 +22,7 @@ class CategoriesCoordinator: Coordinator {
         let categoriesViewModel = CategoriesViewModel(categoriesDataManager: categoriesDataManager)
         let categoriesViewController = CategoriesViewController(viewModel: categoriesViewModel)
         categoriesViewModel.viewDelegate = categoriesViewController
-        categoriesViewController.title = NSLocalizedString("Categories", comment: "")
+        categoriesViewController.title = NSLocalizedString("Categorias", comment: "")
         presenter.pushViewController(categoriesViewController, animated: false)
     }
     

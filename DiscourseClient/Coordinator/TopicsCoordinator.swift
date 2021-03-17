@@ -30,7 +30,7 @@ class TopicsCoordinator: Coordinator {
     override func start() {
         let topicsViewModel = TopicsViewModel(topicsDataManager: topicsDataManager)
         let topicsViewController = TopicsViewController(viewModel: topicsViewModel)
-        topicsViewController.title = NSLocalizedString("Topics", comment: "")
+        topicsViewController.title = NSLocalizedString("Temas", comment: "")
         topicsViewModel.viewDelegate = topicsViewController
         topicsViewModel.coordinatorDelegate = self
         self.topicsViewModel = topicsViewModel

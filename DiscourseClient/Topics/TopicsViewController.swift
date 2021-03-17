@@ -11,6 +11,11 @@ import UIKit
 /// ViewController que representa un listado de topics
 class TopicsViewController: UIViewController {
 
+    // windows para el fab
+    let windows = UIWindow()
+    //FAB
+    private let fabButton = UIButton(type: UIButton.ButtonType.custom) as UIButton
+    
     lazy var tableView: UITableView = {
         let table = UITableView(frame: .zero, style: .grouped)
         table.translatesAutoresizingMaskIntoConstraints = false
@@ -35,7 +40,23 @@ class TopicsViewController: UIViewController {
 
     override func loadView() {
         view = UIView()
-
+        //prueba de un FAB:
+        let fabIcon = UIImage(named: "iconNew")
+        let yPosition = self.view.frame.size.height - 55 - 20
+        
+        fabButton.frame =  CGRect(x: 12, y: yPosition, width: 64, height: 64)
+        fabButton.setImage(fabIcon, for: .normal)
+        fabButton.autoresizingMask = [.flexibleTopMargin, .flexibleRightMargin]
+        fabButton.addTarget(self, action: #selector(plusButtonTapped), for: .touchUpInside)
+        fabButton.layer.shadowRadius = 3
+        fabButton.layer.shadowColor = UIColor.lightGray.cgColor
+        fabButton.layer.shadowOpacity = 0.9
+        fabButton.layer.shadowOffset = CGSize.zero
+        fabButton.layer.zPosition = 1
+        
+    
+        windows.addSubview(fabButton)
+        view.addSubview(windows)
         view.addSubview(tableView)
         NSLayoutConstraint.activate([
             tableView.topAnchor.constraint(equalTo: view.topAnchor),
@@ -50,9 +71,23 @@ class TopicsViewController: UIViewController {
 //        navigationItem.rightBarButtonItem = rightBarButtonItem
     }
 
+    //se sobreescribe para mantener el fab en su posisicion
+    func scrollViewDidScroll(_ scrollView: UIScrollView) {
+        let off = self.tableView.contentOffset.y
+        let yPosition = self.view.frame.size.height
+        fabButton.frame = CGRect(x: 12, y:off + yPosition, width: fabButton.frame.size.width, height: fabButton.frame.size.height)
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
+        navigationController?.navigationBar.prefersLargeTitles = true
         viewModel.viewWasLoaded()
+        
+    }
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        fabButton.removeFromSuperview()
     }
 
     @objc func plusButtonTapped() {
@@ -99,5 +134,14 @@ extension TopicsViewController: TopicsViewDelegate {
 
     func errorFetchingTopics() {
         showErrorFetchingTopicsAlert()
+    }
+}
+extension UIWindow {
+    static var key: UIWindow? {
+        if #available(iOS 13, *) {
+            return UIApplication.shared.windows.first { $0.isKeyWindow }
+        } else {
+            return UIApplication.shared.keyWindow
+        }
     }
 }
