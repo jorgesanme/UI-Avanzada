@@ -37,7 +37,12 @@ class TopicsViewModel {
             case .success(let response):
                 guard let response = response else { return }
 
-                self?.topicViewModels = response.topicList.topics.map({ TopicCellViewModel(topic: $0) })
+                self?.topicViewModels = response.topicList.topics.map({ TopicCellViewModel(topic: $0, dataManager: self?.topicsDataManager as! TopicsDataManager)
+                })
+                
+//                self?.topicViewModels = response.topicList.topics.map({ TopicCellViewModel(topic: $0) })
+                
+                
                 self?.viewDelegate?.topicsFetched()
             case .failure:
                 self?.viewDelegate?.errorFetchingTopics()
@@ -45,7 +50,7 @@ class TopicsViewModel {
         }
     }
     
-    //Tenia colocado aqúi el dateFormatter.
+   
 
     func viewWasLoaded() {
         fetchTopicsAndReloadUI()

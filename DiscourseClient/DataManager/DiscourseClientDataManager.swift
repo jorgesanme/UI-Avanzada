@@ -6,7 +6,7 @@
 //  Copyright © 2020 Roberto Garrido. All rights reserved.
 //
 
-import Foundation
+import UIKit
 
 
 /// DataManager de la app. Usa un localDataManager y un remoteDataManager que colaboran entre ellos
@@ -23,6 +23,12 @@ class DiscourseClientDataManager {
 }
 
 extension DiscourseClientDataManager: TopicsDataManager {
+    func fechtUserImage(userName: String, completion: @escaping (UIImage) -> ()) {
+        remoteDataManager.fetchUserImage(userName: userName, completion: completion)
+        
+    }
+    
+    
     func fetchAllTopics(completion: @escaping (Result<LatestTopicsResponse?, Error>) -> ()) {
         remoteDataManager.fetchAllTopics(completion: completion)
     }

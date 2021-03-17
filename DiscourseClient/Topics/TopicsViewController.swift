@@ -11,10 +11,26 @@ import UIKit
 /// ViewController que representa un listado de topics
 class TopicsViewController: UIViewController {
 
-    // windows para el fab
-    let windows = UIWindow()
-    //FAB
-    private let fabButton = UIButton(type: UIButton.ButtonType.custom) as UIButton
+    //MARK: REFRESCAR LA LISTA
+    lazy var refreshControl: UIRefreshControl = {
+        let refreshControl = UIRefreshControl()
+        refreshControl.attributedTitle = NSAttributedString(string: "Pull to refresh")
+        refreshControl.addTarget(self, action: #selector(refreshControlPulled), for: .valueChanged)
+        return refreshControl
+    }()
+    
+    
+    //MARK: - FAB
+    lazy var fabButton: UIButton = {
+        let fab = UIButton()
+        fab.translatesAutoresizingMaskIntoConstraints = false
+        //fab.frame = CGRect(x: 250, y: 485, width: 100, height: 100)
+        let fabIcon = UIImage(named: "icoNew")
+        fab.layer.cornerRadius = 32
+        fab.setImage(fabIcon, for: .normal)
+        fab.addTarget(self, action: #selector(plusButtonTapped), for: .touchUpInside)
+        return fab
+    }()
     
     lazy var tableView: UITableView = {
         let table = UITableView(frame: .zero, style: .grouped)
@@ -37,47 +53,25 @@ class TopicsViewController: UIViewController {
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-
+//MARK: loadView
     override func loadView() {
         view = UIView()
-        //prueba de un FAB:
-        let fabIcon = UIImage(named: "iconNew")
-        let yPosition = self.view.frame.size.height - 55 - 20
-        
-        fabButton.frame =  CGRect(x: 12, y: yPosition, width: 64, height: 64)
-        fabButton.setImage(fabIcon, for: .normal)
-        fabButton.autoresizingMask = [.flexibleTopMargin, .flexibleRightMargin]
-        fabButton.addTarget(self, action: #selector(plusButtonTapped), for: .touchUpInside)
-        fabButton.layer.shadowRadius = 3
-        fabButton.layer.shadowColor = UIColor.lightGray.cgColor
-        fabButton.layer.shadowOpacity = 0.9
-        fabButton.layer.shadowOffset = CGSize.zero
-        fabButton.layer.zPosition = 1
-        
-    
-        windows.addSubview(fabButton)
-        view.addSubview(windows)
         view.addSubview(tableView)
+        
         NSLayoutConstraint.activate([
             tableView.topAnchor.constraint(equalTo: view.topAnchor),
             tableView.leftAnchor.constraint(equalTo: view.leftAnchor),
             tableView.rightAnchor.constraint(equalTo: view.rightAnchor),
             tableView.bottomAnchor.constraint(equalTo: view.bottomAnchor)
         ])
-
-
-//        let rightBarButtonItem: UIBarButtonItem = UIBarButtonItem(image: UIImage(systemName: "plus"), style: .plain, target: self, action: #selector(plusButtonTapped))
-//        rightBarButtonItem.tintColor = .black
-//        navigationItem.rightBarButtonItem = rightBarButtonItem
+        tableView.refreshControl = refreshControl
+        //fabButton.pinToSuperView()
+        view.addSubview(fabButton)
+        NSLayoutConstraint.activate(
+            [fabButton.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -16),
+             fabButton.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -12)])    
     }
-
-    //se sobreescribe para mantener el fab en su posisicion
-    func scrollViewDidScroll(_ scrollView: UIScrollView) {
-        let off = self.tableView.contentOffset.y
-        let yPosition = self.view.frame.size.height
-        fabButton.frame = CGRect(x: 12, y:off + yPosition, width: fabButton.frame.size.width, height: fabButton.frame.size.height)
-    }
-    
+  
     override func viewDidLoad() {
         super.viewDidLoad()
         navigationController?.navigationBar.prefersLargeTitles = true
@@ -85,13 +79,15 @@ class TopicsViewController: UIViewController {
         
     }
     
-    override func viewWillDisappear(_ animated: Bool) {
-        super.viewWillDisappear(animated)
-        fabButton.removeFromSuperview()
-    }
 
     @objc func plusButtonTapped() {
         viewModel.plusButtonTapped()
+    }
+    @objc func refreshControlPulled() {
+        DispatchQueue.main.asyncAfter(deadline: .now() + 2.0) { [weak self] in
+            self?.refreshControl.endRefreshing()
+            self?.tableView.reloadData()
+        }
     }
 
     fileprivate func showErrorFetchingTopicsAlert() {
@@ -136,12 +132,15 @@ extension TopicsViewController: TopicsViewDelegate {
         showErrorFetchingTopicsAlert()
     }
 }
-extension UIWindow {
-    static var key: UIWindow? {
-        if #available(iOS 13, *) {
-            return UIApplication.shared.windows.first { $0.isKeyWindow }
-        } else {
-            return UIApplication.shared.keyWindow
-        }
+
+extension UIView{
+    func pinToSuperView(){
+        guard let superview =  self.superview else {return}
+        
+        NSLayoutConstraint.activate(
+            [rightAnchor.constraint(equalTo: superview.safeAreaLayoutGuide.rightAnchor),
+             bottomAnchor.constraint(equalTo: superview.safeAreaLayoutGuide.bottomAnchor)
+            
+            ])
     }
 }

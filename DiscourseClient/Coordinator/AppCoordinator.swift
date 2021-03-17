@@ -57,12 +57,13 @@ class AppCoordinator: Coordinator {
         tabBarController.tabBar.tintColor = .black
         tabBarController.viewControllers = [topicsNavigationController, categoriesNavigationController, usersNavigationController]
         tabBarController.tabBar.items?.first?.image = UIImage(named: "topicUnselected")
+        tabBarController.tabBar.items?.first?.selectedImage = UIImage(named: "inicio")
         tabBarController.tabBar.items?[1].image = UIImage(named: "ajustesUnselected")
+        tabBarController.tabBar.items?[1].selectedImage = UIImage(named: "ajustes")
         tabBarController.tabBar.items?[2].image = UIImage(named: "usuariosUnselected")
+        tabBarController.tabBar.items?[2].selectedImage = UIImage(named: "usuarios")
         
-//        tabBarController.tabBar.items?[2].selectedImage = UIImage(named: "usuarios")
-//        tabBarController.tabBar.items?.first?.selectedImage = UIImage(named: "inicio")
-//        tabBarController.tabBar.items?[1].selectedImage = UIImage(named: "ajustes")
+        
         window.rootViewController = tabBarController
         window.makeKeyAndVisible()
     }

@@ -12,6 +12,14 @@ class UsersViewController: UIViewController {
     let viewModel: UsersViewModel
     let flowLayout = UICollectionViewFlowLayout()
     
+    //MARK: REFRESCAR LA LISTA
+    lazy var refreshControl: UIRefreshControl = {
+        let refreshControl = UIRefreshControl()
+        refreshControl.attributedTitle = NSAttributedString(string: "Pull to refresh")
+        refreshControl.addTarget(self, action: #selector(refreshControlPulled), for: .valueChanged)
+        return refreshControl
+    }()
+    
     lazy var collectionView: UICollectionView = {
         let collection = UICollectionView(frame: .zero, collectionViewLayout: self.flowLayout)
         
@@ -49,6 +57,8 @@ class UsersViewController: UIViewController {
             collectionView.leftAnchor.constraint(equalTo: view.leftAnchor),
             collectionView.rightAnchor.constraint(equalTo: view.rightAnchor),
             collectionView.bottomAnchor.constraint(equalTo: view.bottomAnchor)])
+        
+        collectionView.refreshControl = refreshControl
     }
 
     override func viewDidLoad() {
@@ -60,6 +70,14 @@ class UsersViewController: UIViewController {
     fileprivate func showErrorFetchingUsers() {
         showAlert("Error fetching users\nPlease try again later")
     }
+    
+    @objc func refreshControlPulled() {
+        DispatchQueue.main.asyncAfter(deadline: .now() + 2.0) { [weak self] in
+            self?.refreshControl.endRefreshing()
+            self?.collectionView.reloadData()
+        }
+    }
+    
 }
 
 extension UsersViewController: UICollectionViewDataSource{

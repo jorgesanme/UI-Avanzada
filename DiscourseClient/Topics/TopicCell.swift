@@ -24,8 +24,9 @@ class TopicCell: UITableViewCell {
             
                        
             userImage.layer.cornerRadius = 32 //userImage.frame.height/2
-            userImage.image = UIImage(named: "chica")
-            userImage.backgroundColor = .brown
+            userImage.image = viewModel.image
+            //userImage.image = UIImage(named: "chica") //en caso de no funcionar el viewModel
+            userImage.backgroundColor = UIColor(named: "tangerine")
             topicTitle.text = viewModel.textLabelText
             postCount.text = String(viewModel.topic.postsCount)
             numOfPost.text = String(viewModel.topic.highestPostNumber)
@@ -54,8 +55,7 @@ class TopicCell: UITableViewCell {
 }
 extension TopicCell: UserCellViewModelViewDelegate {
     func userImageFetched() {
-        //userImage?.image = viewModel?.userImage
-        userImage?.image = UIImage(named: "chica")
+        userImage?.image = viewModel?.image
         setNeedsLayout()
     }
 }
