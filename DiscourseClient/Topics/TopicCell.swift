@@ -45,6 +45,10 @@ class TopicCell: UITableViewCell {
                 guard let self = self else {return}
                 self.userImage.alpha = 1
             } completion: {[weak self] (finished) in
+                /*
+                 esta parte no es necesaria en este caso, pero recuerda que se puede hacer
+                 otra animación o ejecutar cualquier orden al termar la animación anterior
+                 */
                 guard let self = self else {return}
                 
                 self.userImage.alpha = 1
