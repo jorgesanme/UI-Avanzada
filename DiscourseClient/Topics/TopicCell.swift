@@ -23,9 +23,15 @@ class TopicCell: UITableViewCell {
             guard let viewModel = viewModel else { return }
             
                        
-            userImage.layer.cornerRadius = 32 //userImage.frame.height/2
+            userImage.layer.cornerRadius = userImage.frame.height/2
+            /*
+             Descomentar siguiente linea
+             en caso de no funcionar el viewModel y si desea ver la animación
+             */
+            //userImage.image = UIImage(named: "chica")
             userImage.image = viewModel.image
-            //userImage.image = UIImage(named: "chica") //en caso de no funcionar el viewModel
+            userImage.alpha = 0
+           
             userImage.backgroundColor = UIColor(named: "tangerine")
             topicTitle.text = viewModel.textLabelText
             postCount.text = String(viewModel.topic.postsCount)
@@ -33,6 +39,17 @@ class TopicCell: UITableViewCell {
             //hay que darle formato a esta fecha
             var fechaFinal = dateFormatter(dateString: viewModel.topic.lastPostedAt)
             lastPostAt.text = String(fechaFinal)
+            
+            //se anima la aparicion de la imagen
+            UIView.animate(withDuration: 3) { [weak self] in
+                guard let self = self else {return}
+                self.userImage.alpha = 1
+            } completion: {[weak self] (finished) in
+                guard let self = self else {return}
+                
+                self.userImage.alpha = 1
+            }
+
         }
     }
     

@@ -20,9 +20,23 @@ class UserCell: UICollectionViewCell {
             userImage.layer.cornerRadius = 40
             userImage.image = viewModel.userImage
             userName.text = viewModel.textLabelText
+            userImage.alpha = 0
+            // se anima la aparición de la imagen
+            UIView.animate(withDuration: 3.0) { [weak self] in
+                guard let self = self else {return}
+                
+                self.userImage.alpha = 1
+                
+            } completion: { [weak self] (finished) in
+                self?.userImage.alpha = 1
+            }
+
         }
     }
+    
 }
+
+
 
 extension UserCell: UserCellViewModelViewDelegate {
     func userImageFetched() {
