@@ -8,18 +8,29 @@
 
 import UIKit
 
+//protocolo para avisar de la recepcion del avatar
+protocol TopicCellViewModelDelegate {
+    func imageDidFetched()
+}
+
 /// ViewModel que representa un topic en la lista
 class TopicCellViewModel {
+    var cellViewModelDelegate : TopicCellViewModelDelegate?
     let topic: Topic
     var textLabelText: String?
-    var image: UIImage?
+    var image: Data?
     
-    init(topic: Topic, dataManager: TopicsDataManager) {
+    init(topic: Topic,users: [User], dataManager: TopicsDataManager) {
         self.topic = topic
         textLabelText = topic.title
         
-        dataManager.fechtUserImage(userName: topic.lastPosterUsername) { [weak self](image) in
-            self?.image = image
+        users.forEach { (user) in
+            if topic.lastPosterUsername == user.username{
+                dataManager.fechtUserImage(userURLTemplate: user.avatarTemplate) { (data) in
+                    self.image = data
+                    self.cellViewModelDelegate?.imageDidFetched()
+                }
+            }
         }
     }
 }

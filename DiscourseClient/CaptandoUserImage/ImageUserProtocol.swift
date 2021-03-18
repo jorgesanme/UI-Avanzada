@@ -9,6 +9,6 @@
 import UIKit
 
 protocol ImageUserProtocol {
-    func fechtUserImage(userName: String, completion: @escaping (UIImage)->())
+    func fechtUserImage(userURLTemplate: String, completion: @escaping (Data)->())
     
 }

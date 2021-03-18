@@ -24,12 +24,9 @@ class TopicCell: UITableViewCell {
             
                        
             userImage.layer.cornerRadius = userImage.frame.height/2
-            /*
-             Descomentar siguiente linea
-             en caso de no funcionar el viewModel y si desea ver la animación
-             */
-            //userImage.image = UIImage(named: "chica")
-            userImage.image = viewModel.image
+            
+            self.userImage.image = (viewModel.image != nil) ? UIImage(data: viewModel.image!) :UIImage(named: "chica")
+            
             userImage.alpha = 0
            
             userImage.backgroundColor = UIColor(named: "tangerine")
@@ -76,7 +73,7 @@ class TopicCell: UITableViewCell {
 }
 extension TopicCell: UserCellViewModelViewDelegate {
     func userImageFetched() {
-        userImage?.image = viewModel?.image
+        //userImage?.image = viewModel?.image
         setNeedsLayout()
     }
 }

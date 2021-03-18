@@ -10,7 +10,7 @@ import UIKit
 
 /// ViewController que representa un listado de topics
 class TopicsViewController: UIViewController {
-
+    
     //MARK: REFRESCAR LA LISTA
     lazy var refreshControl: UIRefreshControl = {
         let refreshControl = UIRefreshControl()
@@ -108,6 +108,7 @@ extension TopicsViewController: UITableViewDataSource {
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         if let cell = tableView.dequeueReusableCell(withIdentifier: "TopicCell", for: indexPath) as? TopicCell,
             let cellViewModel = viewModel.viewModel(at: indexPath) {
+            cellViewModel.cellViewModelDelegate = self
             cell.viewModel = cellViewModel
             return cell
         }
@@ -116,6 +117,12 @@ extension TopicsViewController: UITableViewDataSource {
     }
 }
 
+extension TopicsViewController: TopicCellViewModelDelegate{
+    func imageDidFetched() {
+        tableView.reloadData()
+    }
+    
+}
 extension TopicsViewController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)

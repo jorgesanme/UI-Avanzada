@@ -23,9 +23,8 @@ class DiscourseClientDataManager {
 }
 
 extension DiscourseClientDataManager: TopicsDataManager {
-    func fechtUserImage(userName: String, completion: @escaping (UIImage) -> ()) {
-        remoteDataManager.fetchUserImage(userName: userName, completion: completion)
-        
+    func fechtUserImage(userURLTemplate: String, completion: @escaping (Data) -> ()) {
+        remoteDataManager.fechtUserImage(userURLTemplate: userURLTemplate, completion: completion)
     }
     
     
