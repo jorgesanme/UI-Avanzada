@@ -14,13 +14,16 @@ protocol TopicCellViewModelDelegate {
 }
 
 /// ViewModel que representa un topic en la lista
-class TopicCellViewModel {
+class TopicCellViewModel: CellViewModel {
+    var type: TypeOfCell
+    
     var cellViewModelDelegate : TopicCellViewModelDelegate?
     let topic: Topic
     var textLabelText: String?
     var image: Data?
     
-    init(topic: Topic,users: [User], dataManager: TopicsDataManager) {
+    init(type: TypeOfCell ,topic: Topic,users: [User], dataManager: TopicsDataManager) {
+        self.type = type
         self.topic = topic
         textLabelText = topic.title
         

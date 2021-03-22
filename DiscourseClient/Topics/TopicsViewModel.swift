@@ -25,7 +25,7 @@ class TopicsViewModel {
     weak var coordinatorDelegate: TopicsCoordinatorDelegate?
     weak var viewDelegate: TopicsViewDelegate?
     let topicsDataManager: TopicsDataManager
-    var topicViewModels: [TopicCellViewModel] = []
+    var topicViewModels: [CellViewModel] = []
 
     init(topicsDataManager: TopicsDataManager) {
         self.topicsDataManager = topicsDataManager
@@ -41,7 +41,10 @@ class TopicsViewModel {
 
                 
                 self.topicViewModels = response.topicList.topics.map({ (topic) in
-                    return TopicCellViewModel(topic: topic, users: response.users, dataManager: self.topicsDataManager)
+                    if (topic.pinned && topic.id == 7){
+                        return WellcomeViewModel(cellType: .wellcome)
+                    }
+                    return TopicCellViewModel(type: .topic,topic: topic, users: response.users, dataManager: self.topicsDataManager)
                 })
                 
                 
@@ -67,14 +70,16 @@ class TopicsViewModel {
         return topicViewModels.count
     }
 
-    func viewModel(at indexPath: IndexPath) -> TopicCellViewModel? {
+    func viewModel(at indexPath: IndexPath) -> CellViewModel? {
         guard indexPath.row < topicViewModels.count else { return nil }
+        
         return topicViewModels[indexPath.row]
     }
 
     func didSelectRow(at indexPath: IndexPath) {
         guard indexPath.row < topicViewModels.count else { return }
-        coordinatorDelegate?.didSelect(topic: topicViewModels[indexPath.row].topic)
+        let topic = topicViewModels[indexPath.row] as! Topic
+        coordinatorDelegate?.didSelect(topic: topic)
     }
 
     func plusButtonTapped() {

@@ -11,13 +11,17 @@ import UIKit
 /// ViewController que representa un listado de topics
 class TopicsViewController: UIViewController {
     
-    //MARK: REFRESCAR LA LISTA
+    //MARK: -REFRESCAR LA LISTA
     lazy var refreshControl: UIRefreshControl = {
         let refreshControl = UIRefreshControl()
         refreshControl.attributedTitle = NSAttributedString(string: "Pull to refresh")
         refreshControl.addTarget(self, action: #selector(refreshControlPulled), for: .valueChanged)
         return refreshControl
     }()
+    //MARK: - WellcomeCell
+    let wellcomeCell  = WellcomeViewCell(frame: CGRect(x: 25, y: 25, width: 375, height: 151))
+    
+    
     
     
     //MARK: - FAB
@@ -37,7 +41,8 @@ class TopicsViewController: UIViewController {
         table.translatesAutoresizingMaskIntoConstraints = false
         table.dataSource = self
         table.delegate = self
-        table.register(UINib(nibName: "TopicCell", bundle: nil), forCellReuseIdentifier: "TopicCell")        
+        table.register(UINib(nibName: "WellcomeViewCell", bundle: .main), forCellReuseIdentifier: "WellcomeViewCell")
+        table.register(UINib(nibName: "TopicCell", bundle: .main), forCellReuseIdentifier: "TopicCell")
         table.estimatedRowHeight = 100
         table.rowHeight = UITableView.automaticDimension
         return table
@@ -74,7 +79,7 @@ class TopicsViewController: UIViewController {
   
     override func viewDidLoad() {
         super.viewDidLoad()
-        navigationController?.navigationBar.prefersLargeTitles = true
+        navigationController?.navigationBar.prefersLargeTitles = true        
         viewModel.viewWasLoaded()
         
     }
@@ -106,13 +111,23 @@ extension TopicsViewController: UITableViewDataSource {
     }
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        if let cell = tableView.dequeueReusableCell(withIdentifier: "TopicCell", for: indexPath) as? TopicCell,
-            let cellViewModel = viewModel.viewModel(at: indexPath) {
-            cellViewModel.cellViewModelDelegate = self
-            cell.viewModel = cellViewModel
-            return cell
+        
+        if let cellViewModel = self.viewModel.viewModel(at: indexPath){
+            switch cellViewModel.type {
+                case .topic:
+                    if let cell = tableView.dequeueReusableCell(withIdentifier: "TopicCell", for: indexPath) as? TopicCell{
+                        cell.viewModel = cellViewModel as? TopicCellViewModel
+                        return cell
+                    }
+                case .wellcome:
+                    if let cell = tableView.dequeueReusableCell(withIdentifier: "WellcomeViewCell", for: indexPath) as? WellcomeViewCell{
+                        
+                        return cell
+                    }
+                   
+            }
         }
-
+        
         fatalError()
     }
 }

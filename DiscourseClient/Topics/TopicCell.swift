@@ -21,8 +21,7 @@ class TopicCell: UITableViewCell {
     var viewModel: TopicCellViewModel? {
         didSet {
             guard let viewModel = viewModel else { return }
-            
-                       
+                   
             userImage.layer.cornerRadius = userImage.frame.height/2
             
             self.userImage.image = (viewModel.image != nil) ? UIImage(data: viewModel.image!) :UIImage(named: "chica")
@@ -54,6 +53,8 @@ class TopicCell: UITableViewCell {
         }
     }
     
+    // dado que no se va ha usar en otras clases
+    // lo he colocado aquí mismo, 
     func dateFormatter(dateString: String) -> String {
         //dado que no se va ha usar en otro lugar, lo he dejado aquí
         let inputStringDate = dateString //Este es el String que nos llega
