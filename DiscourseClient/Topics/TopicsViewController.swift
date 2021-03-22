@@ -10,13 +10,39 @@ import UIKit
 
 /// ViewController que representa un listado de topics
 class TopicsViewController: UIViewController {
-
+    
+    //MARK: -REFRESCAR LA LISTA
+    lazy var refreshControl: UIRefreshControl = {
+        let refreshControl = UIRefreshControl()
+        refreshControl.attributedTitle = NSAttributedString(string: "Pull to refresh")
+        refreshControl.addTarget(self, action: #selector(refreshControlPulled), for: .valueChanged)
+        return refreshControl
+    }()
+    //MARK: - WellcomeCell
+    let wellcomeCell  = WellcomeViewCell(frame: CGRect(x: 25, y: 25, width: 375, height: 151))
+    
+    
+    
+    
+    //MARK: - FAB
+    lazy var fabButton: UIButton = {
+        let fab = UIButton()
+        fab.translatesAutoresizingMaskIntoConstraints = false
+        //fab.frame = CGRect(x: 250, y: 485, width: 100, height: 100)
+        let fabIcon = UIImage(named: "icoNew")
+        fab.layer.cornerRadius = 32
+        fab.setImage(fabIcon, for: .normal)
+        fab.addTarget(self, action: #selector(plusButtonTapped), for: .touchUpInside)
+        return fab
+    }()
+    
     lazy var tableView: UITableView = {
         let table = UITableView(frame: .zero, style: .grouped)
         table.translatesAutoresizingMaskIntoConstraints = false
         table.dataSource = self
         table.delegate = self
-        table.register(UINib(nibName: "TopicCell", bundle: nil), forCellReuseIdentifier: "TopicCell")
+        table.register(UINib(nibName: "WellcomeViewCell", bundle: .main), forCellReuseIdentifier: "WellcomeViewCell")
+        table.register(UINib(nibName: "TopicCell", bundle: .main), forCellReuseIdentifier: "TopicCell")
         table.estimatedRowHeight = 100
         table.rowHeight = UITableView.automaticDimension
         return table
@@ -32,31 +58,41 @@ class TopicsViewController: UIViewController {
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-
+//MARK: loadView
     override func loadView() {
         view = UIView()
-
         view.addSubview(tableView)
+        
         NSLayoutConstraint.activate([
             tableView.topAnchor.constraint(equalTo: view.topAnchor),
             tableView.leftAnchor.constraint(equalTo: view.leftAnchor),
             tableView.rightAnchor.constraint(equalTo: view.rightAnchor),
             tableView.bottomAnchor.constraint(equalTo: view.bottomAnchor)
         ])
-
-
-        let rightBarButtonItem: UIBarButtonItem = UIBarButtonItem(image: UIImage(systemName: "plus"), style: .plain, target: self, action: #selector(plusButtonTapped))
-        rightBarButtonItem.tintColor = .black
-        navigationItem.rightBarButtonItem = rightBarButtonItem
+        tableView.refreshControl = refreshControl
+        //fabButton.pinToSuperView()
+        view.addSubview(fabButton)
+        NSLayoutConstraint.activate(
+            [fabButton.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -16),
+             fabButton.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -12)])    
     }
-
+  
     override func viewDidLoad() {
         super.viewDidLoad()
+        navigationController?.navigationBar.prefersLargeTitles = true        
         viewModel.viewWasLoaded()
+        
     }
+    
 
     @objc func plusButtonTapped() {
         viewModel.plusButtonTapped()
+    }
+    @objc func refreshControlPulled() {
+        DispatchQueue.main.asyncAfter(deadline: .now() + 2.0) { [weak self] in
+            self?.refreshControl.endRefreshing()
+            self?.tableView.reloadData()
+        }
     }
 
     fileprivate func showErrorFetchingTopicsAlert() {
@@ -75,16 +111,33 @@ extension TopicsViewController: UITableViewDataSource {
     }
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        if let cell = tableView.dequeueReusableCell(withIdentifier: "TopicCell", for: indexPath) as? TopicCell,
-            let cellViewModel = viewModel.viewModel(at: indexPath) {
-            cell.viewModel = cellViewModel
-            return cell
+        
+        if let cellViewModel = self.viewModel.viewModel(at: indexPath){
+            switch cellViewModel.type {
+                case .topic:
+                    if let cell = tableView.dequeueReusableCell(withIdentifier: "TopicCell", for: indexPath) as? TopicCell{
+                        cell.viewModel = cellViewModel as? TopicCellViewModel
+                        return cell
+                    }
+                case .wellcome:
+                    if let cell = tableView.dequeueReusableCell(withIdentifier: "WellcomeViewCell", for: indexPath) as? WellcomeViewCell{
+                        
+                        return cell
+                    }
+                   
+            }
         }
-
+        
         fatalError()
     }
 }
 
+extension TopicsViewController: TopicCellViewModelDelegate{
+    func imageDidFetched() {
+        tableView.reloadData()
+    }
+    
+}
 extension TopicsViewController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
@@ -99,5 +152,17 @@ extension TopicsViewController: TopicsViewDelegate {
 
     func errorFetchingTopics() {
         showErrorFetchingTopicsAlert()
+    }
+}
+
+extension UIView{
+    func pinToSuperView(){
+        guard let superview =  self.superview else {return}
+        
+        NSLayoutConstraint.activate(
+            [rightAnchor.constraint(equalTo: superview.safeAreaLayoutGuide.rightAnchor),
+             bottomAnchor.constraint(equalTo: superview.safeAreaLayoutGuide.bottomAnchor)
+            
+            ])
     }
 }

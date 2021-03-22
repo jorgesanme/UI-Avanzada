@@ -2,13 +2,13 @@
 //  UserCell.swift
 //  DiscourseClient
 //
-//  Created by Roberto Garrido on 28/03/2020.
-//  Copyright © 2020 Roberto Garrido. All rights reserved.
+//  Created by Jorge Sanchez on 15/03/2021.
+//  
 //
 
 import UIKit
 
-class UserCell: UITableViewCell {
+class UserCell: UICollectionViewCell {
     
     @IBOutlet weak var userImage: UIImageView!
     @IBOutlet weak var userName: UILabel!
@@ -17,19 +17,35 @@ class UserCell: UITableViewCell {
         didSet {
             guard let viewModel = viewModel else { return }
             viewModel.viewDelegate = self
-            
+            userImage.layer.cornerRadius = 40
             userImage.image = viewModel.userImage
             userName.text = viewModel.textLabelText
-            
-//            textLabel?.text = viewModel.textLabelText
-//            imageView?.image = viewModel.userImage
+            userImage.alpha = 0
+            // se anima la aparición de la imagen
+            UIView.animate(withDuration: 3.0) { [weak self] in
+                guard let self = self else {return}
+                
+                self.userImage.alpha = 1
+                
+            } completion: { [weak self] (finished) in
+                /*
+                 esta parte no es necesaria en este caso, pero recuerda que se puede hacer
+                 otra animación o ejecutar cualquier orden al termar la animación anterior
+                 */
+                guard let self = self else  {return}
+                self.userImage.alpha = 1
+            }
+
         }
     }
+    
 }
+
+
 
 extension UserCell: UserCellViewModelViewDelegate {
     func userImageFetched() {
-        imageView?.image = viewModel?.userImage
+        userImage?.image = viewModel?.userImage
         setNeedsLayout()
     }
 }

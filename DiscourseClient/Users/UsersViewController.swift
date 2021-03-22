@@ -2,26 +2,32 @@
 //  UsersViewController.swift
 //  DiscourseClient
 //
-//  Created by Roberto Garrido on 28/03/2020.
-//  Copyright © 2020 Roberto Garrido. All rights reserved.
+// Created by Jorge Sanchez on 15/03/2021.
 //
 
 import UIKit
 
 class UsersViewController: UIViewController {
+    
     let viewModel: UsersViewModel
-
-    lazy var tableView: UITableView = {
-        let table = UITableView(frame: .zero, style: .grouped)
-        table.translatesAutoresizingMaskIntoConstraints = false
-        table.dataSource = self
-        table.delegate = self
-        table.register(UINib(nibName: "UserCell", bundle: nil), forCellReuseIdentifier: "UserCell")
-        table.estimatedRowHeight = 100
-        table.rowHeight = UITableView.automaticDimension
-        return table
+    let flowLayout = UICollectionViewFlowLayout()
+    
+    //MARK: REFRESCAR LA LISTA
+    lazy var refreshControl: UIRefreshControl = {
+        let refreshControl = UIRefreshControl()
+        refreshControl.attributedTitle = NSAttributedString(string: "Pull to refresh")
+        refreshControl.addTarget(self, action: #selector(refreshControlPulled), for: .valueChanged)
+        return refreshControl
     }()
-
+    
+    lazy var collectionView: UICollectionView = {
+        let collection = UICollectionView(frame: .zero, collectionViewLayout: self.flowLayout)
+        
+        collection.translatesAutoresizingMaskIntoConstraints = false
+        collection.register(UINib(nibName: "UserCell", bundle: nil), forCellWithReuseIdentifier: "UserCell")
+        return collection
+    }()
+    
     init(viewModel: UsersViewModel) {
         self.viewModel = viewModel
         super.init(nibName: nil, bundle: nil)
@@ -34,59 +40,79 @@ class UsersViewController: UIViewController {
     override func loadView() {
         view = UIView()
         view.backgroundColor = .white
-
-        view.addSubview(tableView)
+      
+        flowLayout.sectionInset = UIEdgeInsets(top: 24, left: 26, bottom: 24, right: 26)
+        flowLayout.minimumInteritemSpacing = 20.5
+        flowLayout.itemSize = CGSize(width: 94, height: 124)
+        flowLayout.estimatedItemSize = .zero
+        flowLayout.minimumLineSpacing = 18
+        collectionView.setCollectionViewLayout(flowLayout, animated: true)
+        collectionView.backgroundColor = .white
+        collectionView.dataSource = self
+        collectionView.delegate = self
+        
+        view.addSubview(collectionView)
         NSLayoutConstraint.activate([
-            tableView.topAnchor.constraint(equalTo: view.topAnchor),
-            tableView.leftAnchor.constraint(equalTo: view.leftAnchor),
-            tableView.rightAnchor.constraint(equalTo: view.rightAnchor),
-            tableView.bottomAnchor.constraint(equalTo: view.bottomAnchor)
-        ])
+            collectionView.topAnchor.constraint(equalTo: view.topAnchor),
+            collectionView.leftAnchor.constraint(equalTo: view.leftAnchor),
+            collectionView.rightAnchor.constraint(equalTo: view.rightAnchor),
+            collectionView.bottomAnchor.constraint(equalTo: view.bottomAnchor)])
+        
+        collectionView.refreshControl = refreshControl
     }
 
     override func viewDidLoad() {
         super.viewDidLoad()
         viewModel.viewWasLoaded()
+        navigationController?.navigationBar.prefersLargeTitles = true
     }
 
     fileprivate func showErrorFetchingUsers() {
         showAlert("Error fetching users\nPlease try again later")
     }
+    
+    @objc func refreshControlPulled() {
+        DispatchQueue.main.asyncAfter(deadline: .now() + 2.0) { [weak self] in
+            self?.refreshControl.endRefreshing()
+            self?.collectionView.reloadData()
+        }
+    }
+    
 }
 
-extension UsersViewController: UITableViewDataSource {
-    func numberOfSections(in tableView: UITableView) -> Int {
-        return viewModel.numberOfSections()
+extension UsersViewController: UICollectionViewDataSource{
+    
+    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+        viewModel.numberOfRows(in: section)
     }
-
-    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return viewModel.numberOfRows(in: section)
-    }
-
-    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        if let cell = tableView.dequeueReusableCell(withIdentifier: "UserCell", for: indexPath) as? UserCell,
-            let cellViewModel = viewModel.viewModel(at: indexPath) {
+    
+    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        if let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "UserCell", for: indexPath) as?  UserCell,
+              let cellViewModel = viewModel.viewModel(at: indexPath) {
             cell.viewModel = cellViewModel
             return cell
         }
-
         fatalError()
     }
 }
 
-extension UsersViewController: UITableViewDelegate {
-    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        tableView.deselectRow(at: indexPath, animated: true)
+
+//MARK: -Al seleccionar un usuario
+extension UsersViewController: UICollectionViewDelegate{
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        collectionView.deselectItem(at: indexPath, animated: true)
         viewModel.didSelectRow(at: indexPath)
     }
 }
 
+//MARK: -UserViewController
 extension UsersViewController: UsersViewModelViewDelegate {
     func usersWereFetched() {
-        tableView.reloadData()
+        collectionView.reloadData()
     }
 
     func errorFetchingUsers() {
         showErrorFetchingUsers()
     }
 }
+

@@ -68,6 +68,12 @@
 		62A697A823E89E6700CCEA3E /* DiscourseClientLocalDataManagerImpl.swift in Sources */ = {isa = PBXBuildFile; fileRef = 62A697A723E89E6700CCEA3E /* DiscourseClientLocalDataManagerImpl.swift */; };
 		62D577B5242FC6EC00268ADC /* UpdateUserNameRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 62D577B4242FC6EC00268ADC /* UpdateUserNameRequest.swift */; };
 		62D577B7242FC76300268ADC /* UpdateUserNameResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 62D577B6242FC76300268ADC /* UpdateUserNameResponse.swift */; };
+		FD2432282604C1D4003C955E /* WellcomeViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = FD2432272604C1D4003C955E /* WellcomeViewModel.swift */; };
+		FD2432312604D8C0003C955E /* TypeOfCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = FD2432302604D8C0003C955E /* TypeOfCell.swift */; };
+		FD749D2C26024E5E00F29A28 /* ImageUserProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = FD749D2B26024E5E00F29A28 /* ImageUserProtocol.swift */; };
+		FD8DE7682604B37A000444A2 /* WellcomeViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = FD8DE7662604B37A000444A2 /* WellcomeViewCell.swift */; };
+		FD8DE7692604B37A000444A2 /* WellcomeViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = FD8DE7672604B37A000444A2 /* WellcomeViewCell.xib */; };
+		FDA6FD8B2608B7DB0089649E /* CellViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = FDA6FD8A2608B7DB0089649E /* CellViewModel.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -134,6 +140,12 @@
 		62A697A723E89E6700CCEA3E /* DiscourseClientLocalDataManagerImpl.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DiscourseClientLocalDataManagerImpl.swift; sourceTree = "<group>"; };
 		62D577B4242FC6EC00268ADC /* UpdateUserNameRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UpdateUserNameRequest.swift; sourceTree = "<group>"; };
 		62D577B6242FC76300268ADC /* UpdateUserNameResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UpdateUserNameResponse.swift; sourceTree = "<group>"; };
+		FD2432272604C1D4003C955E /* WellcomeViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WellcomeViewModel.swift; sourceTree = "<group>"; };
+		FD2432302604D8C0003C955E /* TypeOfCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TypeOfCell.swift; sourceTree = "<group>"; };
+		FD749D2B26024E5E00F29A28 /* ImageUserProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageUserProtocol.swift; sourceTree = "<group>"; };
+		FD8DE7662604B37A000444A2 /* WellcomeViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WellcomeViewCell.swift; sourceTree = "<group>"; };
+		FD8DE7672604B37A000444A2 /* WellcomeViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = WellcomeViewCell.xib; sourceTree = "<group>"; };
+		FDA6FD8A2608B7DB0089649E /* CellViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CellViewModel.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -230,6 +242,7 @@
 		627DC5A723E5F580006D8615 /* DiscourseClient */ = {
 			isa = PBXGroup;
 			children = (
+				FD749D2A26024E3000F29A28 /* CaptandoUserImage */,
 				62015CC923EF19E600673EBB /* Extensions */,
 				627DC5C923E603A9006D8615 /* Model */,
 				627DC5C623E6036F006D8615 /* DataManager */,
@@ -271,6 +284,11 @@
 				62015CB623EF04C200673EBB /* TopicCellViewModel.swift */,
 				62015CB823EF084C00673EBB /* TopicCell.swift */,
 				62015CB923EF084C00673EBB /* TopicCell.xib */,
+				FD8DE7662604B37A000444A2 /* WellcomeViewCell.swift */,
+				FD8DE7672604B37A000444A2 /* WellcomeViewCell.xib */,
+				FD2432272604C1D4003C955E /* WellcomeViewModel.swift */,
+				FD2432302604D8C0003C955E /* TypeOfCell.swift */,
+				FDA6FD8A2608B7DB0089649E /* CellViewModel.swift */,
 			);
 			path = Topics;
 			sourceTree = "<group>";
@@ -344,6 +362,14 @@
 			path = Responses;
 			sourceTree = "<group>";
 		};
+		FD749D2A26024E3000F29A28 /* CaptandoUserImage */ = {
+			isa = PBXGroup;
+			children = (
+				FD749D2B26024E5E00F29A28 /* ImageUserProtocol.swift */,
+			);
+			path = CaptandoUserImage;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -407,6 +433,7 @@
 				62015CBB23EF084C00673EBB /* TopicCell.xib in Resources */,
 				626F76DF242FA491006610C8 /* CategoryCell.xib in Resources */,
 				626F76F1242FACBC006610C8 /* UserCell.xib in Resources */,
+				FD8DE7692604B37A000444A2 /* WellcomeViewCell.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -431,11 +458,14 @@
 				62D577B5242FC6EC00268ADC /* UpdateUserNameRequest.swift in Sources */,
 				626F7701242FB99D006610C8 /* UserViewModel.swift in Sources */,
 				62015CC823EF162D00673EBB /* SingleTopicResponse.swift in Sources */,
+				FDA6FD8B2608B7DB0089649E /* CellViewModel.swift in Sources */,
+				FD2432312604D8C0003C955E /* TypeOfCell.swift in Sources */,
 				62015CC423EF14FC00673EBB /* TopicDetailDataManager.swift in Sources */,
 				62015CDB23EF301300673EBB /* CategoriesViewModel.swift in Sources */,
 				62015CBD23EF0C6700673EBB /* TopicsCoordinator.swift in Sources */,
 				62A697A623E89C2200CCEA3E /* LatestTopicsResponse.swift in Sources */,
 				627DC5CF23E604D2006D8615 /* DiscourseClientRemoteDataManager.swift in Sources */,
+				FD749D2C26024E5E00F29A28 /* ImageUserProtocol.swift in Sources */,
 				626F76EB242FABA0006610C8 /* UsersViewController.swift in Sources */,
 				627DC5C523E5FEFD006D8615 /* TopicsViewController.swift in Sources */,
 				627DC5D323E605E5006D8615 /* DiscourseClientRemoteDataManagerImpl.swift in Sources */,
@@ -444,6 +474,7 @@
 				62015CD823EF26C900673EBB /* AddTopicCoordinator.swift in Sources */,
 				62015CD423EF21A900673EBB /* AddNewTopicResponse.swift in Sources */,
 				62015CC623EF161E00673EBB /* SingleTopicRequest.swift in Sources */,
+				FD2432282604C1D4003C955E /* WellcomeViewModel.swift in Sources */,
 				626F76F0242FACBC006610C8 /* UserCell.swift in Sources */,
 				62015CCE23EF1F5200673EBB /* AddTopicViewModel.swift in Sources */,
 				62015CDF23EF30E600673EBB /* CategoriesCoordinator.swift in Sources */,
@@ -463,6 +494,7 @@
 				62015CD023EF1F6800673EBB /* AddTopicViewController.swift in Sources */,
 				626F76E3242FA65A006610C8 /* CategoriesResponse.swift in Sources */,
 				626F76FD242FB834006610C8 /* UserResponse.swift in Sources */,
+				FD8DE7682604B37A000444A2 /* WellcomeViewCell.swift in Sources */,
 				627DC5A923E5F580006D8615 /* AppDelegate.swift in Sources */,
 				626F76F7242FAD34006610C8 /* UsersRequest.swift in Sources */,
 				62015CB723EF04C200673EBB /* TopicCellViewModel.swift in Sources */,

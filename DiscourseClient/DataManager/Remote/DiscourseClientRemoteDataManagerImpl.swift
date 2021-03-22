@@ -6,16 +6,44 @@
 //  Copyright © 2020 Roberto Garrido. All rights reserved.
 //
 
-import Foundation
+import UIKit
 
 /// Implementación por defecto del protocolo remoto, en este caso usando SessionAPI
 class DiscourseClientRemoteDataManagerImpl: DiscourseClientRemoteDataManager {
+    
     let session: SessionAPI
 
     init(session: SessionAPI) {
         self.session = session
     }
-
+    
+    //    func fetchUserImage(userURLTemplate: String, completion: @escaping (Data) -> ()) {
+    //        DispatchQueue.global(qos: .default).async {
+    //            var imageStringURL = "https://mdiscourse.keepcoding.io"
+    //            imageStringURL.append(userURLTemplate.replacingOccurrences(of: "{size}", with: "64"))
+    //            if let url = URL(string: imageStringURL),
+    //               let data = try? Data(contentsOf: url) {
+    //                    DispatchQueue.main.async {
+    //                        completion(data)
+    //                    }
+    //                }
+    //            }
+    //        }
+    
+    func fechtUserImage(userURLTemplate: String, completion: @escaping (Data) -> ()) {
+        DispatchQueue.global(qos: .default).async {
+            var imageStringURL = "https://mdiscourse.keepcoding.io"
+            imageStringURL.append(userURLTemplate.replacingOccurrences(of: "{size}", with: "64"))
+            if let url = URL(string: imageStringURL),
+               let data = try? Data(contentsOf: url) {
+                DispatchQueue.main.async {
+                    completion(data)
+                }
+            }
+        }
+    }
+    
+    
     func fetchAllTopics(completion: @escaping (Result<LatestTopicsResponse?, Error>) -> ()) {
         let request = LatestTopicsRequest()
         session.send(request: request) { result in

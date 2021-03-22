@@ -17,11 +17,15 @@
                 <rect key="frame" x="0.0" y="0.0" width="94" height="124"/>
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
-                    <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="f2U-Oy-3ZS">
-                        <rect key="frame" x="7" y="0.0" width="80" height="80.5"/>
+                    <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="top" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="f2U-Oy-3ZS">
+                        <rect key="frame" x="7" y="0.0" width="80" height="80"/>
+                        <constraints>
+                            <constraint firstAttribute="width" constant="80" id="pcf-hu-uQl"/>
+                            <constraint firstAttribute="height" constant="80" id="zfp-Ri-Rw4"/>
+                        </constraints>
                     </imageView>
                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="O21-J9-0FS">
-                        <rect key="frame" x="0.0" y="103.5" width="94" height="20.5"/>
+                        <rect key="frame" x="0.0" y="84" width="94" height="20.5"/>
                         <fontDescription key="fontDescription" type="system" pointSize="17"/>
                         <nil key="textColor"/>
                         <nil key="highlightedColor"/>
@@ -29,12 +33,10 @@
                 </subviews>
                 <constraints>
                     <constraint firstAttribute="trailing" secondItem="O21-J9-0FS" secondAttribute="trailing" id="805-Oh-qXa"/>
-                    <constraint firstItem="f2U-Oy-3ZS" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" constant="7" id="GAq-Re-S0C"/>
+                    <constraint firstItem="f2U-Oy-3ZS" firstAttribute="centerX" secondItem="H2p-sc-9uM" secondAttribute="centerX" id="M7k-Fe-qRZ"/>
+                    <constraint firstItem="O21-J9-0FS" firstAttribute="top" secondItem="f2U-Oy-3ZS" secondAttribute="bottom" constant="4" id="Yw6-Xd-Qw8"/>
                     <constraint firstItem="O21-J9-0FS" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" id="cMJ-gl-8fl"/>
-                    <constraint firstAttribute="trailing" secondItem="f2U-Oy-3ZS" secondAttribute="trailing" constant="7" id="ci1-NJ-ohE"/>
-                    <constraint firstAttribute="bottom" secondItem="O21-J9-0FS" secondAttribute="bottom" id="dsE-yp-vrC"/>
                     <constraint firstItem="f2U-Oy-3ZS" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" id="qwD-Ug-QJB"/>
-                    <constraint firstItem="O21-J9-0FS" firstAttribute="top" secondItem="f2U-Oy-3ZS" secondAttribute="bottom" constant="23" id="sBB-kn-7Jq"/>
                 </constraints>
             </tableViewCellContentView>
             <viewLayoutGuide key="safeArea" id="njF-e1-oar"/>
@@ -42,7 +44,7 @@
                 <outlet property="userImage" destination="f2U-Oy-3ZS" id="fOY-WN-WJT"/>
                 <outlet property="userName" destination="O21-J9-0FS" id="nbN-mY-mbc"/>
             </connections>
-            <point key="canvasLocation" x="-154" y="91"/>
+            <point key="canvasLocation" x="-155.07246376811597" y="90.401785714285708"/>
         </tableViewCell>
     </objects>
 </document>

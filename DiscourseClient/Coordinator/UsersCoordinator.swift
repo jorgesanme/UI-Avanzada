@@ -24,7 +24,7 @@ class UsersCoordinator: Coordinator {
         let usersViewController = UsersViewController(viewModel: usersViewModel)
         usersViewModel.viewDelegate = usersViewController
         usersViewModel.coordinatorDelegate = self
-        usersViewController.title = NSLocalizedString("Users", comment: "")
+        usersViewController.title = NSLocalizedString("Usuarios", comment: "")
         presenter.pushViewController(usersViewController, animated: false)
     }
 
