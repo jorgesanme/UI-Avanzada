@@ -28,7 +28,6 @@ class TopicCell: UITableViewCell {
             
             userImage.alpha = 0
            
-            userImage.backgroundColor = UIColor(named: "tangerine")
             topicTitle.text = viewModel.textLabelText
             postCount.text = String(viewModel.topic.postsCount)
             numOfPost.text = String(viewModel.topic.highestPostNumber)
